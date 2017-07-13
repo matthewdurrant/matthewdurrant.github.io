@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+	<title>eCatalogue Subscription Generator</title>
+
+</head>
+<body>
+	<header class="navbar navbar-default navbar-main-menu">
+		<div class="navbar-header pull-left">
+			<a href="#" id="app-logo" class="navbar-brand">
+				<img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA5OC44MyA0MCI+PGRlZnM+PHN0eWxlPi5he2ZpbGw6IzAwNWViODt9LmJ7ZmlsbDojZmZmO308L3N0eWxlPjwvZGVmcz48dGl0bGU+bmhzLWxvZ288L3RpdGxlPjxyZWN0IGNsYXNzPSJhIiB3aWR0aD0iOTguODMiIGhlaWdodD0iNDAiLz48cGF0aCBjbGFzcz0iYiIgZD0iTTkuNjYsMy44NkgyMC40MUwyNywyNi4xOUgyNy4xTDMxLjYyLDMuODZoOC4xMmwtNi44MywzMi4ySDIyLjIxTDE1LjQ3LDEzLjc4SDE1LjM4TDEwLjkxLDM2LjA2SDIuNzlaIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgwKSIvPjxwYXRoIGNsYXNzPSJiIiBkPSJNNDIuOTEsMy44Nmg4LjYzTDQ5LDE2LjE4SDU5LjJMNjEuNzQsMy44Nmg4LjYzbC02LjY5LDMyLjJINTVsMi44Ni0xMy43OUg0Ny43MUw0NC44NSwzNi4wNkgzNi4yM1oiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDApIi8+PHBhdGggY2xhc3M9ImIiIGQ9Ik05My4wNiwxMS4xNUExNi4xOCwxNi4xOCwwLDAsMCw4Niw5LjY3Yy0zLjQxLDAtNi4xOC41MS02LjE4LDMuMDksMCw0LjU3LDEyLjUsMi44NiwxMi41LDEyLjY0LDAsOC45LTguMjYsMTEuMjEtMTUuNzMsMTEuMjFhMzYsMzYsMCwwLDEtMTAtMS42NmwyLTYuNTVjMS43MSwxLjExLDUuMTIsMS44NSw3LjkzLDEuODVzNi44Ny0uNTEsNi44Ny0zLjgzYzAtNS4xNy0xMi41LTMuMjMtMTIuNS0xMi4zMiwwLTguMyw3LjI5LTEwLjgsMTQuMzUtMTAuOCw0LDAsNy43LjQyLDkuODcsMS40M1oiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDApIi8+PC9zdmc+" alt="App Logo" height="20px">
+			</a>
+		</div>
+	</header>
+
+	<div class="container">
+		<h1>eCatalogue Subscription Generator</h1>
+		<div class="col-md-12">
+			<p>Generate .groovy files for upload to the eCatalogue system.</p>
+			<p>Please note that files are created from scratch &mdash; make sure you are not accidentally removing existing subscriptions when you overwrite a file.</p>
+		</div>
+		<div class="container">
+			<form>
+				<div class="form-group row">
+					<label class="col-sm-2 col-form-label" for="sourceCatalog">SourceCatalog</label>
+					<div class="col-sm-4">
+						<input type="text" class="form-control" id="sourceCatalog"
+						placeholder="(e.g. S00001-NOEF_0000_0" required>
+					</div>
+					<label class="col-sm-1 col-form-label" for="band">Band</label>
+					<div class="col-sm-2">
+						<input type="text" class="form-control" id="band"
+						placeholder="(band e.g. 3)" required>
+					</div>
+					<label class="col-sm-1 col-form-label" for="lot">Lot</label>
+					<div class="col-sm-2">
+						<input type="text" class="form-control" id="lot"
+						placeholder="(lot, e.g. 1.1)" required>
+					</div>
+				</div>
+				<div class="form-group row">
+					<label class="col-sm-2 col-form-label" for="subscriberId">Customer ID</label>
+					<div class="col-sm-4">
+						<input type="text" class="form-control" id="subscriberId"
+						placeholder="(e.g. RST)" required>
+					</div>
+					<label class="col-sm-2 col-form-label" for="discount">Discount (%)</label>
+					<div class="col-sm-4">
+						<input type="numeric" class="form-control" id="discount"
+						placeholder="(e.g. 5)" required>
+					</div>
+				</div>
+			</form>
+		</div>
+		<div class="col-md-12 text-center">
+			<button id="addToList" class="btn btn-info">Add to list</button>
+			<button id="downloadZip" class="btn btn-primary hidden">Download .zip</button>
+			<a role='button' download='subscriptions.properties' id="makeSubProps" class="btn btn-primary hidden">Download subscription.properties file</a>
+		</div>
+		<div class="col-md-12 hidden" id="tableDiv">
+			<table class="table table-condensed table-bordered" id="subsTable">
+				<thead>
+					<tr>
+						<td>Source Catalog</td>
+						<td>Customer ID</td>
+						<td>Subscriptions</td>
+						<td>Download .groovy</td>
+					</tr>
+				</thead>
+				<tbody></tbody>
+			</table>
+		</div>
+	</div>
+
+	<footer>
+		<div class="container copyright text-center">
+			<div id="footerMessageBuildVersion">
+				<small>eCatalogue Subscription Generator</small>
+			</div>
+			&copy; 2017&nbsp;<a href="https://noecpc.nhs.uk/" target="_blank">NHS North of England Commercial Procurement Collaborative</a>
+		</div>
+	</footer>
+
+	<script type="text/javascript" src="FileSaver.js"></script>
+	<script type="text/javascript" src="jszip.js"></script>
+	<script type="text/javascript" src="script.js"></script>
+</body>
+</html>

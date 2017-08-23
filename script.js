@@ -100,6 +100,9 @@ var textFiles = [];
 var subFile;
 //create a text file from a string
 function makeTextFile(text, file) {
+	//Replace LF line endings with CRLF (to support Windows Notepad)
+	text = text.replace(/\n/g, "\r\n");
+
 	var data = new Blob([text], {type: 'text/plain'});
     // If we are replacing a previously generated file we need to
     // manually revoke the object URL to avoid memory leaks.
@@ -144,7 +147,11 @@ function addSubscription() {
 	//get inputs from form
 	var sourceCatalog = sourceCatInput.value;
 	var subscriberId = subscriberIdInput.value;
-	var priceType = bandInput.value + "-" + lotInput.value;
+	var priceType;
+	//If both inputs are *, output * only - else, join
+	if (bandInput.value === '*' && lotInput.value === '*')
+		{ priceType = '*';}
+	else priceType = bandInput.value + "-" + lotInput.value;
 	var discount = discountInput.value;
 
 	var newFile = null;
@@ -247,6 +254,7 @@ class groovyFile {
 	toGroovy() {
 		//Convert this object to JSON.
 		var outputString = JSON.stringify(this.contents, null, ' ');
+		console.log(outputString);
 		//Convert JSON to Groovy script.
 		//This is hackish but works well - simply delete JSON's curly braces
 		//and double quotes.

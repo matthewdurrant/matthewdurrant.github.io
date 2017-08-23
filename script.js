@@ -1,7 +1,10 @@
-//The two buttons for adding to list, and exporting the subscription.properties
+//The buttons for adding to list, and exporting the subscription.properties
 var addBtn = document.querySelector("#addToList");
 var subBtn = document.querySelector("#makeSubProps");
 var zipBtn = document.querySelector("#downloadZip");
+
+//for adding a new attribute filter
+var addAttrBtn = document.querySelector("#attrBtn");
 
 //the form inputs
 var sourceCatInput = document.querySelector("#sourceCatalog");
@@ -11,6 +14,12 @@ var lotInput = document.querySelector("#lot");
 var discountInput = document.querySelector("#discount");
 //table to display current files
 var subsTable = document.querySelector("#subsTable tbody");
+//table for current attributes
+var attrTable = document.querySelector("#attrTable tbody");
+
+//attribute form inputs
+var attrNameInput = document.querySelector("#attributeName");
+var attrValueInput = document.querySelector("#attributeValue");
 
 //last row added to table
 var lastRow;
@@ -21,8 +30,9 @@ var groovyFiles = [];
 //if form is filled in correctly, add the data
 addBtn.addEventListener("click", function() {
 
-	if (document.querySelector("form").reportValidity())
+	if (document.querySelector("#mainForm").reportValidity())
 	{
+		// console.log("Adding to list...");
 		addSubscription();
 	}
 }
@@ -47,6 +57,33 @@ zipBtn.addEventListener("click", function() {
 	});
 });
 
+//add a new attribute
+var newFileAttributes = [];
+addAttrBtn.addEventListener("click", function() {
+	if (document.querySelector("#attrForm").reportValidity())
+	{
+		addAttribute();
+	}
+})	
+
+function addAttribute() {
+	newFileAttributes[attrNameInput.value.toString()] = "'" + attrValueInput.value + "'";
+	//Clear form
+	attrNameInput.value = null;
+	attrValueInput.value = null;
+
+	//Also add to table. TODO reuse code properly
+	//make table unhidden
+	document.querySelector("#attrTableDiv").classList.remove("hidden");
+	//clear old tableDiv
+	$("#attrTable tbody tr").remove();
+	//Insert new rows
+	Object.keys(newFileAttributes).forEach(function(key) {
+		var newRow = attrTable.insertRow();
+		newRow.insertCell(0).textContent = key;
+		newRow.insertCell(1).textContent = newFileAttributes[key];
+	})
+}
 
 //update a 4 cell table row with new file data
 function addDataToTable(newRow, newFile, newSub, index)
@@ -125,15 +162,24 @@ function addSubscription() {
 		groovyFiles.push(newFile);
 	}
 	var index = groovyFiles.indexOf(newFile);
+	//create attributes array	
+	var attributes = $.extend( {}, newFileAttributes)
+	//reset working array and table
+	newFileAttributes = [];
+	document.querySelector("#attrTableDiv").classList.add("hidden");
+	$("#attrTable tbody tr").remove();
 	//Create new anonymous subscription object
-	var newSub = [{
+	var newSub = [{	
 		contractId: "'" + sourceCatalog + "'",
 		classificationId: "'*'",
 		classificationGroupId: "'*'",
 		priceType: "'" + priceType + "'",
-		attributes: [],
+		attributes: [attributes],
 		discount: "'" + discount + "'"
 	}];
+
+
+
 
 	//Add this new subscription to our file
 	newFile.contents.subscription.push(newSub);
@@ -156,6 +202,7 @@ function addSubscription() {
 	}
 	//Update list of subscriptions for this row
 	newRow.cells[2].textContent = newFile.getSubscriptions();
+	lastRow = newRow;
 
 	//Update download button
 	var btn = document.querySelector("#download-" + index);
@@ -172,7 +219,7 @@ function addSubscription() {
 	document.querySelector("#tableDiv").classList.remove("hidden");
 
 	newRow.classList.add("success");
-	lastRow = newRow;
+
 }
 
 //this object is exported as a .groovy script file for a syndication.

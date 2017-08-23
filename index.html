@@ -22,7 +22,7 @@
 			<p>Please note that files are created from scratch &mdash; make sure you are not accidentally removing existing subscriptions when you overwrite a file.</p>
 		</div>
 		<div class="container">
-			<form>
+			<form id="mainForm">
 				<div class="form-group row">
 					<label class="col-sm-2 col-form-label" for="sourceCatalog">SourceCatalog</label>
 					<div class="col-sm-4">
@@ -56,9 +56,11 @@
 			</form>
 		</div>
 		<div class="col-md-12 text-center">
+			<!-- Button trigger modal -->
+			<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">
+				View/add attributes
+			</button>
 			<button id="addToList" class="btn btn-info">Add to list</button>
-			<button id="downloadZip" class="btn btn-primary hidden">Download .zip</button>
-			<a role='button' download='subscriptions.properties' id="makeSubProps" class="btn btn-primary hidden">Download subscription.properties file</a>
 		</div>
 		<div class="col-md-12 hidden" id="tableDiv">
 			<table class="table table-condensed table-bordered" id="subsTable">
@@ -73,6 +75,44 @@
 				<tbody></tbody>
 			</table>
 		</div>
+
+		<div class="col-md-12 text-center">
+			<button id="downloadZip" class="btn btn-primary hidden">Download .zip</button>
+			<a role='button' download='subscriptions.properties' id="makeSubProps" class="btn btn-primary hidden">Download subscription.properties file</a>
+		</div>
+	</div>
+
+	<!-- Modal pop-up for attributes-->
+	<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-body">
+					<div class="col-md-12 hidden" id="attrTableDiv">
+						<table class="table table-condensed table-bordered" id="attrTable">
+							<thead>
+								<tr>
+									<td>Attribute Name</td>
+									<td>Attribute Value</td>
+								</tr>
+							</thead>
+							<tbody></tbody>
+						</table>
+					</div>
+					<form id="attrForm">
+						<div class="form-group">
+							<input type="text" class="form-control" id="attributeName"
+							placeholder="Attribute Name" required>
+							<input type="text" class="form-control" id="attributeValue"
+							placeholder="Attribute Value" required>
+						</div>
+					</form>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+					<button type="button" class="btn btn-primary" id="attrBtn">Add new attribute</button>
+				</div>
+			</div>
+		</div>
 	</div>
 
 	<footer>
@@ -84,6 +124,11 @@
 		</div>
 	</footer>
 
+	<script
+	src="https://code.jquery.com/jquery-3.2.1.min.js"
+	integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+	crossorigin="anonymous"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 	<script type="text/javascript" src="FileSaver.js"></script>
 	<script type="text/javascript" src="jszip.js"></script>
 	<script type="text/javascript" src="script.js"></script>

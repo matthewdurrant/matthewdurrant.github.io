@@ -145,14 +145,14 @@ function getSubscriptionProperties() {
 function addSubscription() {
 	//When user clicks "Add to list", create or update our array of files
 	//get inputs from form
-	var sourceCatalog = sourceCatInput.value;
-	var subscriberId = subscriberIdInput.value;
+	var sourceCatalog = sourceCatInput.value.trim();
+	var subscriberId = subscriberIdInput.value.trim();
 	var priceType;
 	//If both inputs are *, output * only - else, join
-	if (bandInput.value === '*' && lotInput.value === '*')
+	if (bandInput.value.trim() === '*' && lotInput.value.trim() === '*')
 		{ priceType = '*';}
-	else priceType = bandInput.value + "-" + lotInput.value;
-	var discount = discountInput.value;
+	else priceType = bandInput.value.trim() + "-" + lotInput.value.trim();
+	var discount = discountInput.value.trim();
 
 	var newFile = null;
 	//Does a file already exist for this catalog and subscriber?

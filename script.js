@@ -259,7 +259,7 @@ class groovyFile {
 		//This is hackish but works well - simply delete JSON's curly braces
 		//and double quotes.
 		const regex = /{|}|"/g;
-		return '[' + outputString.replace(regex,'')  + ']';
+		return '[[' + outputString.replace(regex,'')  + ']]';
 	}
 }
 

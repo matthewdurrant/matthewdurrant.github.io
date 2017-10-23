@@ -12,6 +12,7 @@ var subscriberIdInput = document.querySelector("#subscriberId");
 var bandInput = document.querySelector("#band");
 var lotInput = document.querySelector("#lot");
 var discountInput = document.querySelector("#discount");
+var dateInput = document.querySelector("#date");
 //table to display current files
 var subsTable = document.querySelector("#subsTable tbody");
 //table for current attributes
@@ -147,6 +148,7 @@ function addSubscription() {
 	//get inputs from form
 	var sourceCatalog = sourceCatInput.value.trim();
 	var subscriberId = subscriberIdInput.value.trim();
+	var date = dateInput.value;
 	var priceType;
 	//If both inputs are *, output * only - else, join
 	if (bandInput.value.trim() === '*' && lotInput.value.trim() === '*')
@@ -165,7 +167,7 @@ function addSubscription() {
 	//if no newFile found, create new file
 	if (newFile === null)
 	{
-		newFile = new groovyFile(sourceCatalog, subscriberId);
+		newFile = new groovyFile(sourceCatalog, subscriberId, date);
 		groovyFiles.push(newFile);
 	}
 	var index = groovyFiles.indexOf(newFile);
@@ -231,13 +233,13 @@ function addSubscription() {
 
 //this object is exported as a .groovy script file for a syndication.
 class groovyFile {
-	constructor(sourceCatalog, customerId)
+	constructor(sourceCatalog, customerId, date)
 	{
 		this.sourceCatalog = sourceCatalog;
 		this.customerId = customerId;
 		this.fileName = customerId + ".groovy";
 		this.folder = sourceCatalog;
-		this.contents = new contents(sourceCatalog, customerId);
+		this.contents = new contents(sourceCatalog, customerId, date);
 	}
 
 	//return the subscriptions on this syndication
@@ -265,7 +267,7 @@ class groovyFile {
 
 //used to keep the Groovy script contents separate from metadata (file name, etc.)
 class contents {
-	constructor(sourceCatalog, subscriberId) {
+	constructor(sourceCatalog, subscriberId, activationDate) {
 		//Syndication array, which really only contains one anonymous object
 		this.syndication = [ { 
 			//Wrap everything in single quotes
@@ -273,6 +275,7 @@ class contents {
 			targetCatalog: "'" + sourceCatalog + '-' + subscriberId + "'",
 			targetSupplier: "'" + sourceCatalog.split("-")[0] + "'",
 			targetContract: "'" + sourceCatalog + '-' + subscriberId + "'",
+			activationDate: "'" + activationDate + "'"
 		} ];
 		//Subscription array, which will contain 1+ anonymous objects
 		this.subscription = [];
